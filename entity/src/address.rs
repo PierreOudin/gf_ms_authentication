@@ -6,15 +6,15 @@ pub struct Entity;
 
 #[derive(Clone, Debug, PartialEq, Eq, DeriveModel, DeriveActiveModel)]
 pub struct Model {
-    #[sea_orm(primary_key, column_name = "adr_Id" )]
+    #[sea_orm(primary_key, column_name = "adr_id" )]
     pub id: i32,
-    #[sea_orm(column_name = "adr_Address" )]
+    #[sea_orm(column_name = "adr_address" )]
     pub address: String,
-    #[sea_orm(column_name = "adr_Zip" )]
+    #[sea_orm(column_name = "adr_zip" )]
     pub zip: String,
-    #[sea_orm(column_name = "adr_City" )]
+    #[sea_orm(column_name = "adr_city" )]
     pub city: String,
-    #[sea_orm(column_name = "adr_Additional" )]
+    #[sea_orm(column_name = "adr_additional" )]
     pub additional: Option<String>,
 }
 

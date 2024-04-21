@@ -1,32 +1,59 @@
 use sea_orm::entity::prelude::*;
 
-#[derive(Clone, Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
-#[sea_orm(rs_type = "String", db_type = "String")]
-pub enum Role {
-    #[sea_orm(string_value = "Admin")]
-    Admin,
-    #[sea_orm(string_value = "Compta")]
-    Compta,
-    #[sea_orm(string_value = "Livreur")]
-    Livreur,
-    #[sea_orm(string_value = "Client")]
-    Client
-}
-
 #[derive(Copy, Clone, Default, Debug, DeriveEntity)]
 #[sea_orm(table_name = "role", schema_name = "public")]
 pub struct Entity;
 
-#[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+#[derive(Clone, Debug, PartialEq, Eq, DeriveModel, DeriveActiveModel)]
 pub struct Model {
-    #[sea_orm(primary_key, column_name = "rol_Id")]
+    #[sea_orm(primary_key, column_name = "rol_Id" )]
     pub id: i16,
-    #[sea_orm(column_name = "rol_Id")]
-    pub libelle: Role,
+    #[sea_orm(column_name = "rol_Libelle" )]
+    pub libelle: String,
+}
+
+#[derive(Copy, Clone, Debug, EnumIter, DeriveCustomColumn)]
+pub enum Column {
+    Id,
+    Libelle,
+}
+
+impl IdenStatic for Column {
+    fn as_str(&self) -> &str {
+        match self {
+            // Override column names
+            Self::Id => "rol_Id",
+            Self::Libelle => "rol_Libelle",
+        }
+    }
+}
+
+#[derive(Copy, Clone, Debug, EnumIter, DerivePrimaryKey)]
+pub enum PrimaryKey {
+    Id,
+}
+
+impl PrimaryKeyTrait for PrimaryKey {
+    type ValueType = i16;
+
+    fn auto_increment() -> bool {
+        true
+    }
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {}
+
+impl ColumnTrait for Column {
+    type EntityName = Entity;
+
+    fn def(&self) -> ColumnDef {
+        match self {
+            Self::Id => ColumnType::Integer.def(),
+            Self::Libelle => ColumnType::String(Some(50)).def(),
+        }
+    }
+}
 
 impl Related<super::user::Entity> for Entity {
     fn to() -> RelationDef {

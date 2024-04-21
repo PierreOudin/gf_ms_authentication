@@ -6,9 +6,7 @@ pub struct Entity;
 
 #[derive(Clone, Debug, PartialEq, Eq, DeriveModel, DeriveActiveModel)]
 pub struct Model {
-    #[sea_orm(primary_key, column_name = "rol_Id" )]
     pub id_role: i16,
-    #[sea_orm(primary_key, column_name = "usr_Id" )]
     pub id_user: i32,
 }
 
@@ -30,7 +28,9 @@ impl IdenStatic for Column {
 
 #[derive(Copy, Clone, Debug, EnumIter, DerivePrimaryKey)]
 pub enum PrimaryKey {
+    #[sea_orm(column_name = "rol_Id" )]
     IdRole,
+    #[sea_orm(column_name = "usr_Id" )]
     IdUser,
 }
 
