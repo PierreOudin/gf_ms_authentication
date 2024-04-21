@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: ms_auth_postgres
+    ports:
+      - 55432:5432/tcp
+    environment:
+      POSTGRES_USER: ms_authentication
+      POSTGRES_DB: ms_authentication
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    ports:
+      - "8888:8080"
+
+volumes:
+  db: {}
