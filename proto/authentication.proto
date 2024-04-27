@@ -37,5 +37,6 @@ message SignUpRequest {
 
 message SignUpResponse {
   bool status = 1;
-  uint32 id = 2;
+  string message = 2;
+  uint32 id = 3;
 }

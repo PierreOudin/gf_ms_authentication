@@ -1,10 +1,11 @@
 use sea_orm::entity::prelude::*;
+use serde::{Serialize, Deserialize};
 
 #[derive(Copy, Clone, Default, Debug, DeriveEntity)]
 #[sea_orm(table_name = "usr_asso_adr", schema_name = "public")]
 pub struct Entity;
 
-#[derive(Clone, Debug, PartialEq, Eq, DeriveModel, DeriveActiveModel)]
+#[derive(Clone, Debug, PartialEq, Eq, DeriveModel, DeriveActiveModel, Serialize, Deserialize)]
 pub struct Model {
     pub id_user: i32,
     pub id_address: i32,

@@ -1,6 +1,6 @@
 
 
-use sea_orm::{DatabaseConnection, EntityTrait, QueryFilter, ColumnTrait};
+use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, InsertResult, QueryFilter, QuerySelect, Set};
 use tonic::{Request, Response, Status};
 
 use authentication::{LoginRequest, LoginResponse, VerifyTokenRequest, VerifyTokenResponse, SignUpRequest, SignUpResponse, authenticated_service_server::AuthenticatedService};
@@ -27,7 +27,7 @@ impl MyAuthentication {
 
 #[tonic::async_trait]
 impl AuthenticatedService for MyAuthentication {
-    
+
     async fn login(
         &self,
         request: Request<LoginRequest>,
@@ -36,7 +36,10 @@ impl AuthenticatedService for MyAuthentication {
 
         let request = request.into_inner();
 
-        let user = User::find().filter(user::Column::Email.eq(&request.username)).one(&self.db).await.map_err(|err| Status::internal(err.to_string()))?;
+        let user = User::find()
+        .filter(user::Column::Email.eq(&request.username))
+        .one(&self.db)
+        .await.map_err(|err| Status::internal(err.to_string()))?;
 
         let user = if let Some(u) = user {
             u
@@ -70,7 +73,7 @@ impl AuthenticatedService for MyAuthentication {
             None => return Ok(Response::new(LoginResponse{
                 status: false,
                 token: "".to_string(),
-                message: "internalerror".to_lowercase(),
+                message: "internalerror".to_string().to_lowercase(),
             }))
         };
 
@@ -89,12 +92,39 @@ impl AuthenticatedService for MyAuthentication {
     ) -> Result<Response<VerifyTokenResponse>, Status> {
         println!("Got a request: {:?}", request);
 
-        let response = authentication::VerifyTokenResponse {
-            status: true,
-            message: "".to_string(),
+        let request = request.into_inner();
+
+        let claims = match jwt::generate::validate_token(request.token) {
+            Ok(c) => Some(c),
+            Err(e) => return Ok(Response::new(VerifyTokenResponse{
+                    status: false,
+                    message: e.to_string().replace(" ", "").to_lowercase(),
+                })),
         };
 
-        Ok(Response::new(response))
+        let Some(c) = claims else { return Ok(Response::new(VerifyTokenResponse{
+            status: false,
+            message: "invalidtoken".to_lowercase().to_string(),
+        })) };
+        
+        let user = User::find()
+        .filter(user::Column::Id.eq(c.sub))
+        .filter(user::Column::Email.eq(c.email))
+        .filter(user::Column::Firstname.eq(c.fistname))
+        .filter(user::Column::Lastname.eq(c.lastname))
+        .one(&self.db)
+        .await.map_err(|err| Status::internal(err.to_string()))?;
+
+        match user {
+            Some(_) => return Ok(Response::new(authentication::VerifyTokenResponse {
+                status: true,
+                message: "".to_string(),
+            })),
+            None => return Ok(Response::new(authentication::VerifyTokenResponse {
+                status: false,
+                message: "invalidtoken".to_string(),
+            })),
+        };
     }
 
     async fn sign_up(
@@ -102,10 +132,39 @@ impl AuthenticatedService for MyAuthentication {
         request: Request<SignUpRequest>,
     ) -> Result<Response<SignUpResponse>, Status> {
         println!("Got a request: {:?}", request);
+        let request = request.into_inner();
 
-        let response = authentication::SignUpResponse{
+        let user = User::find()
+        .filter(user::Column::Email.eq(&request.email))
+        .select_only().column(user::Column::Email)
+        .one(&self.db)
+        .await.map_err(|err| Status::internal(err.to_string()))?;
+
+        let last_id = match user {
+            Some(_) => return Ok(Response::new(authentication::SignUpResponse {
+                status: false,
+                message: "alreadyreported".to_string(),
+                id: 0,
+            })),
+            None => {
+                let user_model = user::ActiveModel {
+                    firstname: Set(request.firstname).to_owned(),
+                    lastname: Set(request.lastname).to_owned(),
+                    email: Set(request.email).to_owned(),
+                    phone: Set(request.phone).to_owned(),
+                    password: Set(request.password).to_owned(),
+                    id_restaurant: Set(None).to_owned(),
+                    ..Default::default()
+                };
+                let result = User::insert(user_model).exec(&self.db).await.map_err(|err| Status::internal(err.to_string()))?;
+                result.last_insert_id
+            }
+        };
+
+        let response = authentication::SignUpResponse {
             status: true,
-            id: 1,
+            message: "created".to_string(),
+            id: last_id as u32,
         };
 
         Ok(Response::new(response))

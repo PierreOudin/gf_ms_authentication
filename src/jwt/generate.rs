@@ -14,11 +14,11 @@ pub(crate) fn create_token(user: user::Model) -> Result<String, AuthError> {
     encode(&Header::new(Algorithm::HS256), &claims, &EncodingKey::from_secret(secret.as_ref())).map_err(AuthError::InvalidToken)
 }
 
-pub(crate) fn validate_token(token: &str) -> Result<Claims, AuthError> {
+pub(crate) fn validate_token(token: String) -> Result<Claims, AuthError> {
     let secret = dotenvy::var("JWT_SECRET").expect("JWT_SECRET must be set");
 
     decode::<Claims>(
-        token,
+        &token,
         &DecodingKey::from_secret(secret.as_ref()),
         &Validation::new(Algorithm::HS256),
     )

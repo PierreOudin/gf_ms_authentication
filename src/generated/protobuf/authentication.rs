@@ -50,7 +50,9 @@ pub struct SignUpRequest {
 pub struct SignUpResponse {
     #[prost(bool, tag = "1")]
     pub status: bool,
-    #[prost(uint32, tag = "2")]
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "3")]
     pub id: u32,
 }
 /// Generated client implementations.
