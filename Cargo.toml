@@ -5,13 +5,17 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-entity ={ path = "entity"}
+entity =  { path = "entity"}
 migration = { path = "migration" }
 prost = "0.12.4"
 tonic = "0.11.0"
 tokio = { version = "1.37.0", features = ["macros", "rt-multi-thread"] }
 sea-orm = { version = "0.12.15", features = [ "sqlx-postgres", "runtime-tokio-rustls", "macros" ] }
 dotenvy = "0.15.0"
+jsonwebtoken = "9.3.0"
+serde = { version = "1.0.199", features = ["derive"]}
+chrono = "0.4.38"
+thiserror = "1.0.59"
 # env_logger = "0.11.3"
 # log = "0.4.21"
 

@@ -1,5 +1,7 @@
 pub mod services;
 pub mod server_builder;
+pub mod jwt;
+pub mod error;
 //pub mod db;
 
 use std::time::Duration;
@@ -12,7 +14,9 @@ use sea_orm::{ConnectOptions, Database};
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
 
-    let db_url = std::env::var("DATABASE_URL").expect("DATABASE_URL not found in .env");
+    let db_url = dotenvy::var("DATABASE_URL").expect("DATABASE_URL not found in .env");
+
+    println!("Got a url: {db_url}");
 
     let mut opt = ConnectOptions::new(db_url);
 
@@ -30,11 +34,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let database = Database::connect(opt).await?;
 
+    println!("Connected to server");
+
     Migrator::up(&database, None).await?;
+
+    println!("Migration done");
 
     //let _ = db::migration::create_tables(&database).await;
 
     let addr = "[::1]:50051".parse()?;
-    server_builder::build_server(addr).await?;
+    server_builder::build_server(addr, database).await?;
     Ok(())
 }

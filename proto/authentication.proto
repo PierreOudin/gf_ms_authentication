@@ -4,6 +4,7 @@ package authentication;
 service AuthenticatedService {
   rpc Login(LoginRequest) returns (LoginResponse) {}
   rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse) {}
+  rpc SignUp(SignUpRequest) returns (SignUpResponse) {}
 }
 
 message LoginRequest {
@@ -24,4 +25,17 @@ message VerifyTokenRequest {
 message VerifyTokenResponse {
   bool status = 1;
   string message = 2;
+}
+
+message SignUpRequest {
+  string firstname = 1;
+  string lastname = 2;
+  string email = 3;
+  string phone = 4;
+  string password = 5;
+} 
+
+message SignUpResponse {
+  bool status = 1;
+  uint32 id = 2;
 }

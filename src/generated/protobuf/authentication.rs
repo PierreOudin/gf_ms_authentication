@@ -31,6 +31,28 @@ pub struct VerifyTokenResponse {
     #[prost(string, tag = "2")]
     pub message: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SignUpRequest {
+    #[prost(string, tag = "1")]
+    pub firstname: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub lastname: ::prost::alloc::string::String,
+    #[prost(string, tag = "3")]
+    pub email: ::prost::alloc::string::String,
+    #[prost(string, tag = "4")]
+    pub phone: ::prost::alloc::string::String,
+    #[prost(string, tag = "5")]
+    pub password: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SignUpResponse {
+    #[prost(bool, tag = "1")]
+    pub status: bool,
+    #[prost(uint32, tag = "2")]
+    pub id: u32,
+}
 /// Generated client implementations.
 pub mod authenticated_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -165,6 +187,30 @@ pub mod authenticated_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        pub async fn sign_up(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SignUpRequest>,
+        ) -> std::result::Result<tonic::Response<super::SignUpResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/authentication.AuthenticatedService/SignUp",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("authentication.AuthenticatedService", "SignUp"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -185,6 +231,10 @@ pub mod authenticated_service_server {
             tonic::Response<super::VerifyTokenResponse>,
             tonic::Status,
         >;
+        async fn sign_up(
+            &self,
+            request: tonic::Request<super::SignUpRequest>,
+        ) -> std::result::Result<tonic::Response<super::SignUpResponse>, tonic::Status>;
     }
     #[derive(Debug)]
     pub struct AuthenticatedServiceServer<T: AuthenticatedService> {
@@ -343,6 +393,52 @@ pub mod authenticated_service_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = VerifyTokenSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/authentication.AuthenticatedService/SignUp" => {
+                    #[allow(non_camel_case_types)]
+                    struct SignUpSvc<T: AuthenticatedService>(pub Arc<T>);
+                    impl<
+                        T: AuthenticatedService,
+                    > tonic::server::UnaryService<super::SignUpRequest>
+                    for SignUpSvc<T> {
+                        type Response = super::SignUpResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::SignUpRequest>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as AuthenticatedService>::sign_up(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = SignUpSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(
