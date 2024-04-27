@@ -1,0 +1,152 @@
+syntax = "proto3";
+package user;
+
+service User {
+  rpc AddUser (AddUserRequest) returns (AddUserResponse) {}
+  rpc DeleteUserById (DeleteUserByIdRequest) returns (DeleteUserByIdResponse) {}
+  rpc GetUsers (GetUsersRequest) returns (GetUsersResponse) {} 
+  rpc GetUserById (GetUserByIdRequest) returns (GetUserByIdResponse) {}
+  rpc UpdateUserById (UpdateUserByIdRequest) returns (UpdateUserByIdResponse) {}
+  rpc UpdatePasswordByUserId (
+    UpdatePasswordByUserIdRequest
+  ) returns (
+    UpdatePasswordByUserIdResponse
+  ) {}
+  
+  rpc GetAddressesByUserId (
+      GetAddressesByUserIdRequest) returns (GetAddressesByUserIdResponse) {}
+  
+  rpc RemoveAddressByIdToUser (
+      RemoveAddressByIdRequest) returns (RemoveAddressByIdResponse) {}
+  
+  rpc UpdateAddressById (
+      UpdateAddressByIdRequest) returns (UpdateAddressByIdResponse) {}
+  
+  rpc SetDefaultAddressToUser (
+      SetDefaultAdrToUserRequest) returns (SetDefaultAdrToUserResponse) {}
+  
+  rpc GetDefaultAddressToUser (
+      GetDefaultAdrToUserRequest) returns (GetDefaultAdrToUserResponse) {}
+}
+
+message AddUserRequest {
+  string firstname = 1;
+  string lastname = 2;
+  string email = 3;
+  string phone = 4;
+  string password = 5;
+}
+message AddUserResponse {
+  bool status = 1;
+  uint32 id = 2;
+}
+
+message GetUsersRequest {
+}
+message GetUsersResponse {
+  bool status = 1;
+  repeated UserItem users = 2;
+}
+message UserItem {
+  string firstname = 1;
+  string lastname = 2;
+  string email = 3;
+  string phone = 4;
+  uint32 id = 5;
+}
+
+message DeleteUserByIdRequest {
+  uint32 id = 1;
+}
+message DeleteUserByIdResponse {
+  bool status = 1;
+}
+
+message UpdatePasswordByUserIdRequest {
+  uint32 id_user = 1;
+  string password = 2;
+}
+message UpdatePasswordByUserIdResponse {
+  bool status = 1;
+}
+
+message GetUserByIdRequest {
+  uint32 id = 1;
+}
+message GetUserByIdResponse {
+  bool status = 1;
+  string firstname = 2;
+  string lastname = 3;
+  string email = 4;
+  string phone = 5;
+}
+message GetAddressesByUserIdRequest {
+  uint32 id = 1;
+}
+message GetAddressesByUserIdResponse {
+  bool status = 1;
+  repeated Address addresses = 2;
+}
+
+message AddAddressRequest {
+  uint32 id_user = 1;
+  Address address = 2;
+}
+message AddAddressResponse {
+  bool status = 1;
+}
+
+message RemoveAddressByIdRequest {
+  uint32 id_user = 1;
+  uint32 id_address = 2;
+}
+message RemoveAddressByIdResponse {
+  bool status = 1;
+}
+
+message UpdateUserByIdRequest {
+  uint32 id = 1;
+  string firstname = 2;
+  string lastname = 3;
+  string email = 4;
+  string phone = 5;
+}
+message UpdateUserByIdResponse {
+  bool status = 1;
+  string firstname = 2;
+  string lastname = 3;
+  string email = 4;
+  string phone = 5;
+}
+
+message UpdateAddressByIdRequest {
+  Address address = 1;
+}
+message UpdateAddressByIdResponse {
+  bool status = 1;
+}
+
+message SetDefaultAdrToUserRequest {
+  uint32 id_user = 1;
+  uint32 id_adr = 2;
+  bool set_default = 3;
+}
+message SetDefaultAdrToUserResponse {
+  bool status = 1;
+}
+
+message GetDefaultAdrToUserRequest {
+  uint32 id_user = 1;
+}
+message GetDefaultAdrToUserResponse {
+  uint32 id_user = 1;
+  Address default_address = 2;
+  bool status = 3;
+}
+
+message Address {
+  uint32 id = 1;
+  string address = 2;
+  string cp = 3;
+  string city = 4;
+}

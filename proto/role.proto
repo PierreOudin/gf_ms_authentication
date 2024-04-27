@@ -1,0 +1,79 @@
+syntax = "proto3";
+package role;
+
+service Role {
+  rpc CreateRole (CreateRoleRequest) returns (CreateRoleResponse) {}
+  rpc DeleteRole (DeleteRoleRequest) returns (DeleteRoleResponse) {}
+  rpc GetRole (GetRoleRequest) returns (GetRoleResponse) {}
+  rpc GetRoles (GetRolesRequest) returns (GetRolesResponse) {}
+  rpc GetRoleByUserId (
+      GetRoleByUserIdRequest
+  ) returns (
+      GetRoleByUserIdResponse
+  ) {}
+  rpc SetRoleByUserId (
+    SetRoleByUserIdRequest
+  ) returns (
+      SetRoleByUserIdResponse
+  ) {}
+  rpc UnsetRoleByUserId (
+    UnsetRoleByUserIdRequest
+  ) returns (
+    UnsetRoleByUserIdResponse
+  ) {}
+}
+
+message CreateRoleRequest {
+  string libelle_role = 1;
+}
+message CreateRoleResponse {
+  bool status = 1;
+}
+
+message DeleteRoleRequest {
+  uint32 id_role = 1;
+}
+message DeleteRoleResponse {
+  bool status = 1;
+}
+
+message GetRoleRequest {
+  uint32 id_role = 1;
+}
+message GetRoleResponse {
+  bool status = 1;
+  string libelle_role = 2;
+}
+message GetRolesRequest {
+} 
+message GetRolesResponse {
+  bool status = 1;
+  repeated RoleItem roles = 2;
+}
+
+message GetRoleByUserIdRequest {
+  uint32 id = 1;
+}
+message GetRoleByUserIdResponse {
+  bool status = 1;
+  repeated RoleItem roles = 2;
+}
+
+message SetRoleByUserIdRequest {
+  uint32 user_id = 1;
+  uint32 role_id = 2;
+}
+message SetRoleByUserIdResponse {
+  bool status = 1;
+}
+message UnsetRoleByUserIdRequest {
+  uint32 user_id = 1;
+  uint32 role_id = 2;
+}
+message UnsetRoleByUserIdResponse {
+  bool status = 1;
+}
+message RoleItem {
+  uint32 id = 1;
+  string libelle = 2;
+}

@@ -1,6 +1,6 @@
 
 
-use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, InsertResult, QueryFilter, QuerySelect, Set};
+use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, QuerySelect, Set};
 use tonic::{Request, Response, Status};
 
 use authentication::{LoginRequest, LoginResponse, VerifyTokenRequest, VerifyTokenResponse, SignUpRequest, SignUpResponse, authenticated_service_server::AuthenticatedService};
