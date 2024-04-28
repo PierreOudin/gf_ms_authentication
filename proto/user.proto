@@ -1,7 +1,7 @@
 syntax = "proto3";
 package user;
 
-service User {
+service UserService {
   rpc AddUser (AddUserRequest) returns (AddUserResponse) {}
   rpc DeleteUserById (DeleteUserByIdRequest) returns (DeleteUserByIdResponse) {}
   rpc GetUsers (GetUsersRequest) returns (GetUsersResponse) {} 

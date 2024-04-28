@@ -164,7 +164,7 @@ impl AuthenticatedService for MyAuthentication {
         let response = authentication::SignUpResponse {
             status: true,
             message: "created".to_string(),
-            id: last_id as u32,
+            id: last_id,
         };
 
         Ok(Response::new(response))

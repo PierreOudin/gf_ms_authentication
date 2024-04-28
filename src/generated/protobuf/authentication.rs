@@ -52,8 +52,8 @@ pub struct SignUpResponse {
     pub status: bool,
     #[prost(string, tag = "2")]
     pub message: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "3")]
-    pub id: u32,
+    #[prost(int32, tag = "3")]
+    pub id: i32,
 }
 /// Generated client implementations.
 pub mod authenticated_service_client {
