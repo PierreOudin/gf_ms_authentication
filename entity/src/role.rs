@@ -50,7 +50,7 @@ impl ColumnTrait for Column {
 
     fn def(&self) -> ColumnDef {
         match self {
-            Self::Id => ColumnType::Integer.def(),
+            Self::Id => ColumnType::SmallInteger.def(),
             Self::Libelle => ColumnType::String(Some(50)).def(),
         }
     }

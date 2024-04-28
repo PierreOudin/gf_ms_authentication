@@ -54,7 +54,7 @@ impl ColumnTrait for Column {
 
     fn def(&self) -> ColumnDef {
         match self {
-            Self::IdRole => ColumnType::Integer.def(),
+            Self::IdRole => ColumnType::SmallInteger.def(),
             Self::IdUser => ColumnType::Integer.def(),
         }
     }

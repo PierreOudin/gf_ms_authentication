@@ -62,6 +62,8 @@ impl RoleService for MyRole{
 
         let roles = Role::find().all(&self.db).await.map_err(|err| Status::internal(err.to_string()))?;
 
+        println!("{:?}", roles);
+
         let role_items: Vec<RoleItem> = match roles.len() > 0 {
             true => roles.iter().map(|r| RoleItem{
                 id: r.id as i32,
