@@ -18,7 +18,9 @@ pub struct AddUserRequest {
 pub struct AddUserResponse {
     #[prost(bool, tag = "1")]
     pub status: bool,
-    #[prost(uint32, tag = "2")]
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "3")]
     pub id: u32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -29,7 +31,9 @@ pub struct GetUsersRequest {}
 pub struct GetUsersResponse {
     #[prost(bool, tag = "1")]
     pub status: bool,
-    #[prost(message, repeated, tag = "2")]
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
+    #[prost(message, repeated, tag = "3")]
     pub users: ::prost::alloc::vec::Vec<UserItem>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -57,6 +61,8 @@ pub struct DeleteUserByIdRequest {
 pub struct DeleteUserByIdResponse {
     #[prost(bool, tag = "1")]
     pub status: bool,
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -71,6 +77,8 @@ pub struct UpdatePasswordByUserIdRequest {
 pub struct UpdatePasswordByUserIdResponse {
     #[prost(bool, tag = "1")]
     pub status: bool,
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -84,12 +92,14 @@ pub struct GetUserByIdResponse {
     #[prost(bool, tag = "1")]
     pub status: bool,
     #[prost(string, tag = "2")]
-    pub firstname: ::prost::alloc::string::String,
+    pub message: ::prost::alloc::string::String,
     #[prost(string, tag = "3")]
-    pub lastname: ::prost::alloc::string::String,
+    pub firstname: ::prost::alloc::string::String,
     #[prost(string, tag = "4")]
-    pub email: ::prost::alloc::string::String,
+    pub lastname: ::prost::alloc::string::String,
     #[prost(string, tag = "5")]
+    pub email: ::prost::alloc::string::String,
+    #[prost(string, tag = "6")]
     pub phone: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -103,7 +113,9 @@ pub struct GetAddressesByUserIdRequest {
 pub struct GetAddressesByUserIdResponse {
     #[prost(bool, tag = "1")]
     pub status: bool,
-    #[prost(message, repeated, tag = "2")]
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
+    #[prost(message, repeated, tag = "3")]
     pub addresses: ::prost::alloc::vec::Vec<Address>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -119,6 +131,8 @@ pub struct AddAddressRequest {
 pub struct AddAddressResponse {
     #[prost(bool, tag = "1")]
     pub status: bool,
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -133,6 +147,8 @@ pub struct RemoveAddressByIdRequest {
 pub struct RemoveAddressByIdResponse {
     #[prost(bool, tag = "1")]
     pub status: bool,
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -154,12 +170,14 @@ pub struct UpdateUserByIdResponse {
     #[prost(bool, tag = "1")]
     pub status: bool,
     #[prost(string, tag = "2")]
-    pub firstname: ::prost::alloc::string::String,
+    pub message: ::prost::alloc::string::String,
     #[prost(string, tag = "3")]
-    pub lastname: ::prost::alloc::string::String,
+    pub firstname: ::prost::alloc::string::String,
     #[prost(string, tag = "4")]
-    pub email: ::prost::alloc::string::String,
+    pub lastname: ::prost::alloc::string::String,
     #[prost(string, tag = "5")]
+    pub email: ::prost::alloc::string::String,
+    #[prost(string, tag = "6")]
     pub phone: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -173,6 +191,8 @@ pub struct UpdateAddressByIdRequest {
 pub struct UpdateAddressByIdResponse {
     #[prost(bool, tag = "1")]
     pub status: bool,
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -189,6 +209,8 @@ pub struct SetDefaultAdrToUserRequest {
 pub struct SetDefaultAdrToUserResponse {
     #[prost(bool, tag = "1")]
     pub status: bool,
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -205,6 +227,8 @@ pub struct GetDefaultAdrToUserResponse {
     pub default_address: ::core::option::Option<Address>,
     #[prost(bool, tag = "3")]
     pub status: bool,
+    #[prost(string, tag = "4")]
+    pub message: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
